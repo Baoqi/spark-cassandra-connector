@@ -37,6 +37,7 @@ object Settings extends Build {
 
   val mavenLocalResolver = BuildUtil.mavenLocalResolver
 
+  val aliyun = "aliyun" at "http://maven.aliyun.com/nexus/content/groups/public/"
   val asfSnapshotsResolver = "ASF Snapshots" at "https://repository.apache.org/content/groups/snapshots"
   val asfStagingResolver = "ASF Staging" at "https://repository.apache.org/content/groups/staging"
 
@@ -148,7 +149,7 @@ object Settings extends Build {
       val dir = new File(".").toPath
       SparkInstaller(scalaBinaryVersion.value, dir)
     },
-    resolvers ++= Seq(mavenLocalResolver, asfStagingResolver, asfSnapshotsResolver),
+    resolvers ++= Seq(mavenLocalResolver, aliyun, asfStagingResolver, asfSnapshotsResolver),
     update <<= (installSparkTask, update) map {(_, out) => out}
   )
 
