@@ -1,6 +1,7 @@
 package com.datastax.spark.connector
 
 import scala.language.implicitConversions
+import com.datastax.spark.connector.util.Quote
 
 /** A column that can be selected from CQL results set by name. */
 sealed trait ColumnRef  {
@@ -34,7 +35,7 @@ case object CollectionRemove extends CollectionBehavior
 
 /** References a column by name. */
 case class ColumnName(columnName: String, alias: Option[String] = None) extends ColumnRef {
-  override val cql = s""""$columnName""""
+  override val cql = Quote.quote(columnName)
   override def cqlValueName = columnName
   override def selectedAs = alias.getOrElse(columnName)
   override def toString: String = columnName
@@ -54,7 +55,7 @@ case class CollectionColumnName(
     alias: Option[String] = None,
     collectionBehavior: CollectionBehavior = CollectionOverwrite) extends ColumnRef {
 
-  override val cql = s""""$columnName""""
+  override val cql = Quote.quote(columnName)
   override def cqlValueName = columnName
   override def selectedAs = alias.getOrElse(columnName)
   override def toString: String = columnName
